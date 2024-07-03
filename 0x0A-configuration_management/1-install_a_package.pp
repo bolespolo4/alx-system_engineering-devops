@@ -1,18 +1,21 @@
-# install puppet-lint -v 2.5.0
+# install_flask.pp
 
-package { `python3.8`:
-  ensure   => '3.8.10',
-  provider => 'pip3',
+# Ensure python3-pip is installed
+package { 'python3-pip':
+  ensure => installed,
 }
 
-package { `Flask`:
+# Install Flask version 2.1.0 using pip3
+package { 'Flask':
   ensure   => '2.1.0',
   provider => 'pip3',
+  require  => Package['python3-pip'],
 }
 
-package { `Werkzeug`:
-  ensure   => '2.1.1',
-  provider => 'pip3',
-  require  => Package['Flask']
+# Optional: Create a symbolic link for 'flask' command if needed
+file { '/usr/local/bin/flask':
+  ensure  => link,
+  target  => '/usr/bin/flask',
+  require => Package['Flask'],
 }
 
